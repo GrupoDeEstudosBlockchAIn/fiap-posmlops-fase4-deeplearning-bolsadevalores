@@ -8,7 +8,6 @@ def predict_next_value(last_sequence):
     """
     Faz a predição do próximo valor a partir da última sequência de fechamento normalizada.
     last_sequence deve ser um array numpy com shape (window_size, 1)
-    ALEX
     """
     model = load_model("models/lstm_model.h5")
     scaler = joblib.load("data/scaler.pkl")
