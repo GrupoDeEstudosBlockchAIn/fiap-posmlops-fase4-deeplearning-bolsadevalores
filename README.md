@@ -1,1 +1,1 @@
-# fiap-posmlops-fase4-deeplearning-bolsadevalores
+# Projeto LSTM para Previsão de Ações
