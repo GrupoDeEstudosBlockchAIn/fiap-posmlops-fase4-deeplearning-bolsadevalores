@@ -1,0 +1,62 @@
+import numpy as np
+from tensorflow.keras.models import load_model
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import pandas as pd
+import tensorflow as tf
+import os
+
+def evaluate_model(model_path, data_path, report_path):
+    """
+    Avalia o modelo treinado e gera um relatório de desempenho.
+    
+    Args:
+        model_path (str): Caminho do modelo treinado
+        data_path (str): Caminho dos dados processados
+        report_path (str): Caminho para salvar o relatório
+    """
+    try:
+        # Verificar se os arquivos existem
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Arquivo do modelo não encontrado: {model_path}")
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"Arquivo de dados não encontrado: {data_path}")
+
+        # Carregar modelo
+        try:
+            model = load_model(model_path)
+        except Exception as e:
+            raise ValueError(f"Erro ao carregar o modelo: {e}. Verifique se o arquivo {model_path} contém um modelo válido.")
+
+        # Carregar dados
+        data = np.load(data_path, allow_pickle=True)
+        X_test, y_test, scaler = data['X_test'], data['y_test'], data['scaler'].item()
+        
+        # Fazer previsões
+        predictions = model.predict(X_test)
+        
+        # Desnormalizar dados
+        predictions = scaler.inverse_transform(predictions)
+        y_test = scaler.inverse_transform(y_test)
+        
+        # Calcular métricas
+        mae = mean_absolute_error(y_test, predictions)
+        rmse = np.sqrt(mean_squared_error(y_test, predictions))
+        mape = np.mean(np.abs((y_test - predictions) / y_test)) * 100
+        
+        # Criar relatório
+        report = {
+            'MAE': mae,
+            'RMSE': rmse,
+            'MAPE': mape
+        }
+        
+        # Salvar relatório
+        os.makedirs(os.path.dirname(report_path), exist_ok=True)
+        report_df = pd.DataFrame([report])
+        report_df.to_csv(report_path, index=False)
+        print(f"Relatório salvo em {report_path}")
+        
+        return report
+    except Exception as e:
+        print(f"Erro na avaliação: {e}")
+        return None
