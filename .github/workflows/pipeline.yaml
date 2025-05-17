@@ -55,6 +55,12 @@ jobs:
         run: |
           curl --fail http://localhost:8000
 
+      - name: Testar endpoint /predict
+        run: |
+          curl -X POST http://localhost:8000/predict \
+            -H "Content-Type: application/json" \
+            -d '{"prices": [100]*60}'
+
   package:
     name: 📦 Empacotar aplicação
     runs-on: ubuntu-latest

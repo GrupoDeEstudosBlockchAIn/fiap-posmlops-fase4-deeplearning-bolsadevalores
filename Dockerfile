@@ -25,5 +25,5 @@ COPY . .
 # Expor a porta da API
 EXPOSE 8000
 
-# Comando para iniciar a API
-CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Iniciar API com caminho explícito dos arquivos
+CMD ["uvicorn", "src.api:create_app('models/lstm_model.keras','data/processed_data.npz')", "--factory", "--host", "0.0.0.0", "--port", "8000"]
