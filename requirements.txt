@@ -1,8 +1,9 @@
-pandas
-numpy
-scikit-learn
-matplotlib
-tensorflow
 fastapi
 uvicorn
-python-multipart
+pydantic
+tensorflow
+scikit-learn
+numpy
+pandas
+jinja2
+requests

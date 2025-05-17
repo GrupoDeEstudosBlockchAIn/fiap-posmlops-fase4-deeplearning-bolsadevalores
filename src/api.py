@@ -2,7 +2,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
 from tensorflow.keras.models import load_model
-from sklearn.preprocessing import MinMaxScaler
+from fastapi.responses import RedirectResponse 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def create_app(model_path, data_path):
     """
@@ -17,14 +21,14 @@ def create_app(model_path, data_path):
     # Carregar modelo e scaler
     model = load_model(model_path)
     data = np.load(data_path, allow_pickle=True)
-    scaler = data['scaler'].item()  # <- essencial!
+    scaler = data['scaler'].item()
     
     class StockData(BaseModel):
         prices: list[float]
     
-    @app.get("/")
+    @app.get("/", include_in_schema=False)
     async def root():
-        return {"message": "API de previsão de ações com LSTM. Use POST /predict"}
+        return RedirectResponse(url="/docs") 
 
     @app.post("/predict")
     async def predict(data: StockData):
@@ -44,6 +48,7 @@ def create_app(model_path, data_path):
             
             return {"predicted_price": float(predicted_price)}
         except Exception as e:
+            logger.error(f"Erro interno na predição: {str(e)}")
             raise HTTPException(status_code=500, detail=str(e))
     
     return app

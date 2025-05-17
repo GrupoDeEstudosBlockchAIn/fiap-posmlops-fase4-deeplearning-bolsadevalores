@@ -7,6 +7,10 @@ from src.model_training import build_and_train_model
 from src.model_evaluation import evaluate_model
 from src.api import create_app
 import uvicorn
+from datetime import datetime
+
+def log(msg):
+    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}")
 
 def main():
     parser = argparse.ArgumentParser(description="Tech Challenge Fase 4: Previsão de preços de ações com LSTM")
@@ -27,35 +31,35 @@ def main():
     raw_data_path = os.path.join(base_dir, "data", "raw_stock_data.csv")
     processed_data_path = os.path.join(base_dir, "data", "processed_data.npz")
     model_path = os.path.join(base_dir, "models", "lstm_model.keras")
-    report_path = os.path.join(base_dir, "reports", "evaluation_report.csv")
+    metric_path = os.path.join(base_dir, "metrics", "evaluation_metric.csv")
     
     try:
         # Executar conforme o modo
         if args.mode in ['collect', 'all']:
-            print("Coletando dados...")
+            log("Coletando dados...")
             collect_stock_data(args.ticker, args.start_date, args.end_date, raw_data_path)
         
         if args.mode in ['preprocess', 'all']:
-            print("Pré-processando dados...")
+            log("Pré-processando dados...")
             preprocess_data(raw_data_path, processed_data_path)
         
         if args.mode in ['train', 'all']:
-            print("Treinando modelo...")
+            log("Treinando modelo...")
             data = np.load(processed_data_path)
             X_train, y_train = data['X_train'], data['y_train']
             build_and_train_model(X_train, y_train, model_path, epochs=args.epochs, batch_size=args.batch_size)
         
         if args.mode in ['evaluate', 'all']:
-            print("Avaliando modelo...")
-            evaluate_model(model_path, processed_data_path, report_path)
+            log("Avaliando modelo...")
+            evaluate_model(model_path, processed_data_path, metric_path)
         
         if args.mode in ['api', 'all']:
-            print("Iniciando API...")
+            log("Iniciando API...")
             app = create_app(model_path, processed_data_path)
             uvicorn.run(app, host="127.0.0.1", port=args.port)
     
     except Exception as e:
-        print(f"Erro durante a execução: {e}")
+        log(f"Erro durante a execução: {e}")
         raise
 
 if __name__ == "__main__":

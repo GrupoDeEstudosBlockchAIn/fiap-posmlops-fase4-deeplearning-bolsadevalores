@@ -52,7 +52,7 @@ jobs:
           fi
 
   build:
-    name: Build and Package App
+    name: Build and Run Main
     runs-on: ubuntu-latest
     needs: install
 
@@ -65,21 +65,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: List Repository Files
-        run: ls -R
+      - name: Run Main.py
+        run: |
+          echo "Running main.py to test the build process..."
+          python main.py
 
       - name: Package Application
         run: |
-          tar -czf FinanceInsight.tar.gz FinanceInsight/
+          tar -czf fiap-posmlops-fase4.tar.gz ./
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: FinanceInsight-package
-          path: FinanceInsight.tar.gz
+          name: projeto-deep-learning
+          path: fiap-posmlops-fase4.tar.gz
 
   deploy:
-    name: Deploy to Develop, Staging, or Master
+    name: Deploy to Environment
     runs-on: ubuntu-latest
     needs: build
 
@@ -90,33 +92,33 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: FinanceInsight-package
+          name: projeto-deep-learning
 
       - name: Deploy to Develop
         if: github.ref == 'refs/heads/develop'
         run: |
           echo "Deploying to DEVELOPMENT environment..."
           mkdir -p $HOME/deploy/develop
-          tar -xzf FinanceInsight.tar.gz -C $HOME/deploy/develop
-          echo "Deployment to DEVELOPMENT completed" | tee deploy.log
+          tar -xzf fiap-posmlops-fase4.tar.gz -C $HOME/deploy/develop
+          echo "Deployment to DEVELOPMENT completed." | tee deploy.log
 
       - name: Deploy to Staging
         if: github.ref == 'refs/heads/staging'
         run: |
           echo "Deploying to STAGING environment..."
           mkdir -p $HOME/deploy/staging
-          tar -xzf FinanceInsight.tar.gz -C $HOME/deploy/staging
-          echo "Deployment to STAGING completed" | tee deploy.log
+          tar -xzf fiap-posmlops-fase4.tar.gz -C $HOME/deploy/staging
+          echo "Deployment to STAGING completed." | tee deploy.log
 
       - name: Deploy to Master
         if: github.ref == 'refs/heads/master'
         run: |
-          echo "Deploying to MASTER environment..."
+          echo "Deploying to PRODUCTION environment..."
           mkdir -p $HOME/deploy/master
-          tar -xzf FinanceInsight.tar.gz -C $HOME/deploy/master
-          echo "Deployment to MASTER completed" | tee deploy.log
+          tar -xzf fiap-posmlops-fase4.tar.gz -C $HOME/deploy/master
+          echo "Deployment to MASTER completed." | tee deploy.log
 
       - name: Send Notification on Failure
         if: failure()
         run: |
-          echo "Deployment failed! Sending alert..."
+          echo "❌ Deployment failed. You should check the logs."
