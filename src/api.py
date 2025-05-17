@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
@@ -16,6 +17,9 @@ def create_app(model_path, data_path):
         model_path (str): Caminho do modelo treinado
         data_path (str): Caminho dos dados processados
     """
+    model_path = os.getenv("MODEL_PATH", "models/lstm_model.keras")
+    data_path = os.getenv("DATA_PATH", "data/processed_data.npz")
+
     app = FastAPI()
     
     # Carregar modelo e scaler

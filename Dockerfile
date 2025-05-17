@@ -26,4 +26,7 @@ COPY . .
 EXPOSE 8000
 
 # Iniciar API com caminho explícito dos arquivos
-CMD ["uvicorn", "src.api:create_app('models/lstm_model.keras','data/processed_data.npz')", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+ENV MODEL_PATH=models/lstm_model.keras
+ENV DATA_PATH=data/processed_data.npz
+
+CMD ["uvicorn", "src.api:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
