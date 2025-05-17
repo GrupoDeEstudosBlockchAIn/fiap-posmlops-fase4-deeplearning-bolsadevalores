@@ -7,8 +7,8 @@ on:
     branches: [develop, staging, master]
 
 jobs:
-  build-and-run:
-    name: Build Docker Image e Executar API
+  build:
+    name: 🔧 Build Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -22,21 +22,72 @@ jobs:
         run: |
           docker build -t deeplearning-app .
 
+      - name: Salvar imagem Docker para reutilização
+        run: docker save deeplearning-app | gzip > deeplearning-app.tar.gz
+
+      - name: Upload da imagem Docker como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: deeplearning-app.tar.gz
+
+  test:
+    name: ✅ Testar API no container
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Baixar imagem Docker
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker Image
+        run: |
+          gunzip -c deeplearning-app.tar.gz | docker load
+
       - name: Rodar container com a API
         run: |
           docker run -d -p 8000:8000 --name dl_container deeplearning-app
-          sleep 10  # Aguarda a inicialização da API
+          sleep 10
 
-      - name: Testar se a API está no ar (opcional)
+      - name: Verificar se a API responde
         run: |
-          curl --fail http://localhost:8000 || echo "API não respondeu."
+          curl --fail http://localhost:8000
 
-      - name: Empacotar aplicação
+  package:
+    name: 📦 Empacotar aplicação
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Empacotar aplicação (exceto o .tar.gz)
         run: |
-          tar -czf fiap-posmlops-fase4.tar.gz ./
+          tar --exclude=fiap-posmlops-fase4.tar.gz -czf fiap-posmlops-fase4.tar.gz .
 
-      - name: Upload do artefato gerado
+      - name: Upload do artefato empacotado
         uses: actions/upload-artifact@v4
         with:
           name: projeto-deep-learning
           path: fiap-posmlops-fase4.tar.gz
+
+  deploy:
+    name: 🚀 Deploy (Simulado)
+    runs-on: ubuntu-latest
+    needs: package
+
+    steps:
+      - name: Download do pacote da aplicação
+        uses: actions/download-artifact@v4
+        with:
+          name: projeto-deep-learning
+
+      - name: Simular deploy
+        run: |
+          echo "Iniciando deploy da aplicação..."
+          echo "Descompactando pacote:"
+          tar -xzf fiap-posmlops-fase4.tar.gz
+          echo ">>> Deploy finalizado com sucesso (simulado)!"
