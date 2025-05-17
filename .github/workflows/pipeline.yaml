@@ -72,9 +72,18 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Empacotar aplicação (exceto o .tar.gz)
+      - name: Empacotar aplicação (controlado)
         run: |
-          tar --exclude=fiap-posmlops-fase4.tar.gz -czf fiap-posmlops-fase4.tar.gz .
+          tar -czf fiap-posmlops-fase4.tar.gz \
+            src/ \
+            models/ \
+            data/ \
+            metrics/ \
+            requirements.txt \
+            Dockerfile \
+            main.py \
+            README.md \
+            Documentacao_DeepLearning_Fase4.pdf
 
       - name: Upload do artefato empacotado
         uses: actions/upload-artifact@v4
