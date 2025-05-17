@@ -50,6 +50,8 @@ jobs:
         run: |
           docker run -d -p 8000:8000 --name dl_container deeplearning-app
           sleep 10
+          echo "Logs do container:"
+          docker logs dl_container
 
       - name: Verificar se a API responde
         run: |

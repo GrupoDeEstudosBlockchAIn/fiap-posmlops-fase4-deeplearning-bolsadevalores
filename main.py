@@ -55,7 +55,7 @@ def main():
         
         if args.mode in ['api', 'all']:
             log("Iniciando API...")
-            app = create_app(model_path, processed_data_path)
+            app = create_app()
             uvicorn.run(app, host="127.0.0.1", port=args.port)
     
     except Exception as e:

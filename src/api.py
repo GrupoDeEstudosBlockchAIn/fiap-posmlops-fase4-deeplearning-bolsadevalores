@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def create_app(model_path, data_path):
+def create_app():
     """
     Cria a aplicação FastAPI para servir o modelo.
     
