@@ -96,7 +96,9 @@ python main.py --mode all --ticker AAPL --start_date 2020-01-01 --end_date 2025-
 python main.py --mode api
 ```
 
-Acesse: `http://127.0.0.1:8000/docs` para usar a interface Swagger da API.
+Acesse Local: `http://127.0.0.1:8000/docs` para usar a interface Swagger da API.
+
+Acesse Produção: https://fiap-posmlops-fase4-deeplearning-bolsadevalores-production.up.railway.app/docs
 
 ---
 
@@ -114,6 +116,9 @@ Acesse: `http://127.0.0.1:8000/docs` para usar a interface Swagger da API.
 }
 
 ```
+
+### 7. Clique aqui para ver a evidência em Produção 👉 ![alt text](image.png)
+
 
 ## 📊 Relatório de Métricas  
 Um relatório em HTML será gerado automaticamente em `metrics/metric_report.html`, contendo:
