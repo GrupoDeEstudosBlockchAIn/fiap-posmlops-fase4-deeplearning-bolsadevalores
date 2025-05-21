@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 # Você pode mover esta chave para uma variável de ambiente em produção
-ALPHA_VANTAGE_API_KEY = "KUDU88CFXETWB00B"
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 
 def collect_stock_data(ticker, start_date, end_date, output_path):
     """
