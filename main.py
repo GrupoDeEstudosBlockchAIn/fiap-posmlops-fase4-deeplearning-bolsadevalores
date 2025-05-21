@@ -1,6 +1,9 @@
+# Suprime logs INFO e WARNING do TensorFlow
+import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
 import argparse
 import numpy as np
-import os
 from src.data_collection import collect_stock_data
 from src.data_preprocessing import preprocess_data
 from src.model_training import build_and_train_model
@@ -19,7 +22,7 @@ def main():
                         help="Modo de execução: collect, preprocess, train, evaluate, api ou all")
     parser.add_argument('--ticker', type=str, default='AAPL', help="Símbolo da ação (ex: AAPL)")
     parser.add_argument('--start_date', type=str, default='2020-01-01', help="Data inicial (YYYY-MM-DD)")
-    parser.add_argument('--end_date', type=str, default='2025-05-11', help="Data final (YYYY-MM-DD)")
+    parser.add_argument('--end_date', type=str, default='2025-05-20', help="Data final (YYYY-MM-DD)")
     parser.add_argument('--epochs', type=int, default=50, help="Número de épocas para treinamento")
     parser.add_argument('--batch_size', type=int, default=32, help="Tamanho do lote para treinamento")
     parser.add_argument('--port', type=int, default=8000, help="Porta para a API")
