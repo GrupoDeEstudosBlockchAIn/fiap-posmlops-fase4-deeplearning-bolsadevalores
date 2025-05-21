@@ -1,5 +1,5 @@
-# 📈 Previsão de Preços de Ações com LSTM  
-Tech Challenge | Fase 4 — Residência em Ciência de Dados  
+# 📈 Tech Challenge | Fase 4 — Previsão de Preços de Ações com LSTM  
+Modelo preditivo de redes neurais Long Short Term Memory (LSTM) para predizer o valor de fechamento da bolsa de valores de uma empresa. 
 
 ## 🧠 Visão Geral  
 Este projeto visa a construção de um pipeline completo para previsão de preços de ações utilizando Redes Neurais Recorrentes (RNN), especificamente o modelo LSTM (Long Short-Term Memory). A aplicação é capaz de coletar dados financeiros, pré-processá-los, treinar um modelo preditivo, avaliá-lo e disponibilizar previsões por meio de uma API REST.
@@ -23,19 +23,19 @@ fiap-posmlops-fase4-deeplearning
 │
 ├── .github/
 │   ├── workflows
-│       ├── pipeline.yaml                 # Pipeline do projeto
+│       ├── pipeline.yaml                           # Pipeline do projeto
 │
-├── data/                                 # Dados brutos e pré-processados
+├── data/                                           # Dados brutos e pré-processados
 │   ├── raw_stock_data.csv
 │   └── processed_data.npz
 │
-├── metrics/                              # Relatórios de avaliação
+├── metrics/                                        # Relatórios de avaliação
 │   └── metric_report.html
 │
-├── models/                               # Modelos treinados
+├── models/                                         # Modelos treinados
 │   └── lstm_model.keras
 │
-├── src/                                  # Módulos do projeto
+├── src/                                            # Módulos do projeto
 │   ├── api.py
 │   ├── data_collection.py
 │   ├── data_preprocessing.py
@@ -43,21 +43,21 @@ fiap-posmlops-fase4-deeplearning
 │   ├── model_training.py
 │   └── model_evaluation.py
 │
-├── main.py                               # Script principal
-├── requirements.txt                      # Bibliotecas de instalação
-├── Dockerfile                            # Container de execução
-├── .gitignore                            # Arquivo e pastas ignorados pelo git
-├── README.md                             # Este arquivo
-└── Documentacao_DeepLearning_Fase4.pdf   # Documentação do Projeto LSTM
+├── main.py                                         # Script principal
+├── requirements.txt                                # Bibliotecas de instalação
+├── Dockerfile                                      # Container de execução
+├── .gitignore                                      # Arquivo e pastas ignorados pelo git
+├── README.md                                       # Este arquivo
+└── Documentacao_DeepLearning_Previsao_Precos.pdf   # Documentação do Projeto LSTM
 ```
 
 ---
 
 ## ⚙️ Funcionalidades
 
-| Modo        | Descrição                                                                 |
+| Modo        | Descrição                                                                |
 |-------------|--------------------------------------------------------------------------|
-| `collect`   | Coleta dados históricos de ações com `yfinance`.                         |
+| `collect`   | Coleta dados históricos de ações com `Alpha Vantage`.                    |
 | `preprocess`| Normaliza e estrutura os dados para entrada no modelo LSTM.              |
 | `train`     | Treina um modelo LSTM com os dados processados.                          |
 | `evaluate`  | Avalia o modelo e gera métricas como MAE, RMSE e MAPE (CSV + HTML).      |
