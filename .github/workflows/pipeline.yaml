@@ -83,7 +83,7 @@ jobs:
             Dockerfile \
             main.py \
             README.md \
-            Documentacao_DeepLearning_Fase4.pdf
+            Documentacao_DeepLearning_Previsao_Precos.pdf
 
       - name: Upload do artefato empacotado
         uses: actions/upload-artifact@v4
