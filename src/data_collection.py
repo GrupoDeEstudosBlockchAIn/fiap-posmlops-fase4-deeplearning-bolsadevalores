@@ -30,7 +30,6 @@ def collect_stock_data(ticker, start_date, end_date, output_path):
         response = requests.get(url, params=params)
         data = response.json()
 
-        # DEBUG: Imprimir conteúdo da resposta
         print("Resposta da API:", list(data.keys()))
 
         if "Time Series (Daily)" not in data:
@@ -43,7 +42,7 @@ def collect_stock_data(ticker, start_date, end_date, output_path):
             "2. high": "High",
             "3. low": "Low",
             "4. close": "Close",
-            "5. volume": "Volume"  # corrigido de "6. volume"
+            "5. volume": "Volume"
         })
 
         daily_data.index = pd.to_datetime(daily_data.index)
